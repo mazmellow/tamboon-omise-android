@@ -85,6 +85,8 @@ public class RecyclePullRefreshFragment extends BaseFragment {
             }
         });
 
+        refresh();
+
         return view;
     }
 
@@ -107,6 +109,8 @@ public class RecyclePullRefreshFragment extends BaseFragment {
 
     @Override
     public void showError(String message) {
+        mSwipeRefreshLayout.setRefreshing(false);
+
         final Activity activity = getActivity();
         if(activity==null || activity.isFinishing() || activity.isDestroyed()) return;
 

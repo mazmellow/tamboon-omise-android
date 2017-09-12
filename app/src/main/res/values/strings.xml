@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">TestOmise</string>
+    <string name="root_detected_title">Your device is rooted</string>
     <string name="root_detected_message">Device is rooted. It can cause security vulnerabilities. This can put you at risk to do any financial transactions.</string>
     <string name="please_connect_internet">Please connect to internet.</string>
     <string name="please_waiting">Please Waiting...</string>

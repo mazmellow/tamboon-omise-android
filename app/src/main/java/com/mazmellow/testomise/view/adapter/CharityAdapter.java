@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.mazmellow.testomise.R;
-import com.mazmellow.testomise.model.Charity;
+import com.mazmellow.testomise.model.CharityModel;
 import com.mazmellow.testomise.view.viewholder.CharityViewHolder;
 
 /**
@@ -31,7 +31,7 @@ public class CharityAdapter extends BaseRecycleAdapter {
 
         if(holder instanceof CharityViewHolder){
             CharityViewHolder viewHolder = (CharityViewHolder) holder;
-            Charity model = (Charity) mArrayList.get(position);
+            CharityModel model = (CharityModel) mArrayList.get(position);
             viewHolder.setIsRecyclable(false);
             viewHolder.bind(model);
         }

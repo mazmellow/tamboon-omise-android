@@ -1,6 +1,5 @@
 package com.mazmellow.testomise.presenter;
 
-import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.service.ApiClient;
 
 /**
@@ -27,8 +26,8 @@ public class CharityPresenter extends BasePresenter {
                     }
 
                     @Override
-                    public void onFail() {
-                        if(mvpView!=null) mvpView.showError(context.getString(R.string.error_loading));
+                    public void onFail(String message) {
+                        if(mvpView!=null) mvpView.showError(message);
                     }
                 });
             }

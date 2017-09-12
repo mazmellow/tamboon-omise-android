@@ -4,7 +4,7 @@ package com.mazmellow.testomise.model;
  * Created by maz on 9/12/2017 AD.
  */
 
-public class Charity {
+public class CharityModel {
     private int id;
     private String name, logo_url;
 

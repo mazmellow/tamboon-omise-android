@@ -10,7 +10,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.eventbus.OpenCharityEvent;
-import com.mazmellow.testomise.model.Charity;
+import com.mazmellow.testomise.model.CharityModel;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,7 +27,7 @@ public class CharityViewHolder extends RecyclerView.ViewHolder implements View.O
     @Bind(R.id.txtTitle) TextView txtTitle;
 
     private Context context;
-    private Charity charityModel;
+    private CharityModel charityModel;
 
     public CharityViewHolder(View view, Context context) {
         super(view);
@@ -36,7 +36,7 @@ public class CharityViewHolder extends RecyclerView.ViewHolder implements View.O
         view.setOnClickListener(this);
     }
 
-    public void bind(Charity model) {
+    public void bind(CharityModel model) {
         charityModel = model;
 
         txtTitle.setText(charityModel.getName());

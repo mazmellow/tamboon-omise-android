@@ -1,19 +1,19 @@
 package com.mazmellow.testomise.eventbus;
 
-import com.mazmellow.testomise.model.Charity;
+import com.mazmellow.testomise.model.CharityModel;
 
 /**
  * Created by maz on 9/12/2017 AD.
  */
 
 public class OpenCharityEvent {
-    private Charity model;
+    private CharityModel model;
 
-    public OpenCharityEvent(Charity model) {
+    public OpenCharityEvent(CharityModel model) {
         this.model = model;
     }
 
-    public Charity getModel() {
+    public CharityModel getModel() {
         return model;
     }
 }
