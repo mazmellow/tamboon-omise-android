@@ -3,7 +3,9 @@ package com.mazmellow.testomise.view.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +17,19 @@ import com.bumptech.glide.Glide;
 import com.mazmellow.testomise.Constants;
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.model.CharityModel;
+import com.mazmellow.testomise.model.ResponseModel;
+import com.mazmellow.testomise.presenter.CharityPresenter;
+
+import java.security.GeneralSecurityException;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import co.omise.android.CardNumber;
+import co.omise.android.Client;
+import co.omise.android.TokenRequest;
+import co.omise.android.TokenRequestListener;
+import co.omise.android.models.Token;
 import co.omise.android.ui.CreditCardEditText;
 
 /**
@@ -40,6 +51,7 @@ public class DonateActivity extends BaseActivity {
     @Bind(R.id.btnSubmit) Button btnSubmit;
 
     private CharityModel charityModel;
+    private CharityPresenter charityPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +72,11 @@ public class DonateActivity extends BaseActivity {
             if(!TextUtils.isEmpty(imageUrl)) Glide.with(this).load(imageUrl).into(imgCharity);
         }
 
+        edtUsername.addTextChangedListener(getValidateFormTextWatcher());
+        edtAmount.addTextChangedListener(getValidateFormTextWatcher());
+        edtCardNumber.addTextChangedListener(getValidateFormTextWatcher());
+        edtCvv.addTextChangedListener(getValidateFormTextWatcher());
+
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array, android.R.layout.simple_spinner_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnExpMonth.setAdapter(monthAdapter);
@@ -67,16 +84,121 @@ public class DonateActivity extends BaseActivity {
         ArrayAdapter<CharSequence> yearAdapter = ArrayAdapter.createFromResource(this, R.array.year_array, android.R.layout.simple_spinner_item);
         yearAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnExpYear.setAdapter(yearAdapter);
+
+
+        charityPresenter = new CharityPresenter(CharityPresenter.TYPE_CHARITY_DONATE);
+        charityPresenter.attachView(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        charityPresenter.detachView();
     }
 
     private void validateForm() {
+        String userName = edtUsername.getText().toString();
+        String amount = edtAmount.getText().toString();
+        String cardNumber = edtCardNumber.getText().toString();
+        String cvv = edtCvv.getText().toString();
 
+        if(TextUtils.isEmpty(userName) || TextUtils.isEmpty(amount) || TextUtils.isEmpty(cardNumber) || TextUtils.isEmpty(cvv)) {
+            btnSubmit.setEnabled(false);
+            return;
+        }
+
+        if(CardNumber.normalize(cardNumber).length()!=16){
+            btnSubmit.setEnabled(false);
+            return;
+        }
+
+        if(cvv.length()!=3){
+            btnSubmit.setEnabled(false);
+            return;
+        }
+
+        btnSubmit.setEnabled(true);
     }
 
     @OnClick(R.id.btnSubmit)
     public void onClickSubmit() {
+        String name = edtUsername.getText().toString();
+        String amount = edtAmount.getText().toString();
+        String number = edtCardNumber.getText().toString();
+        String cvv = edtCvv.getText().toString();
+        String expMonth = (String)spnExpMonth.getSelectedItem();
+        String expYear = (String)spnExpYear.getSelectedItem();
 
+        name = name.toUpperCase();
+        number = CardNumber.normalize(number);
+        if(expMonth.startsWith("0")) expMonth = expMonth.substring(1);
+        int month = Integer.parseInt(expMonth);
+        int year = Integer.parseInt(expYear);
+        int donateAmount = Integer.parseInt(amount);
+
+        requestOmisePayment(number, name, month, year, cvv, donateAmount);
     }
 
+    private void requestOmisePayment(String number, final String name, int month, int year, String cvv, final int donateAmount){
+        showLoading();
+        try {
+            Client client = new Client(OMISE_PKEY);
 
+            TokenRequest request = new TokenRequest();
+            request.number = number;
+            request.name = name;
+            request.expirationMonth = month;
+            request.expirationYear = year;
+            request.securityCode = cvv;
+
+            client.send(request, new TokenRequestListener() {
+                @Override
+                public void onTokenRequestSucceed(TokenRequest request, Token token) {
+                    charityPresenter.requestDonate(token, name, donateAmount);
+                }
+
+                @Override
+                public void onTokenRequestFailed(TokenRequest request, Throwable throwable) {
+                    hideLoading();
+                    showAlert(throwable.getMessage());
+                }
+            });
+
+        }catch (GeneralSecurityException e){
+            hideLoading();
+            showAlert(e.getMessage());
+        }
+    }
+
+    @Override
+    public void showResult(Object result, int type) {
+        super.showResult(result, type);
+
+        ResponseModel responseModel = (ResponseModel) result;
+        if(responseModel.isSuccess()){
+            startActivity(new Intent(this, SuccessActivity.class));
+            finish();
+        }else{
+            showAlert(getString(R.string.failed_donate));
+        }
+    }
+
+    private TextWatcher getValidateFormTextWatcher(){
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                validateForm();
+            }
+        };
+    }
 }

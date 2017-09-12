@@ -4,6 +4,8 @@ import android.content.Context;
 
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.model.CharityModel;
+import com.mazmellow.testomise.model.RequestModel;
+import com.mazmellow.testomise.model.ResponseModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +89,54 @@ public class ApiClient {
 
             @Override
             public void onFailure(Call<List<CharityModel>> call, Throwable t) {
+                Timber.w("Call Failure");
+                removeCall(call);
+                if (listenner != null) listenner.onFail(t.getMessage());
+            }
+        });
+    }
+
+    public void requestCharityDonate(RequestModel requestModel, final ApiClientListenner listenner) {
+        Timber.i("Request CharityModel Donate");
+
+        ApiService service = new HttpServiceFactory(context).getApiService();
+        if (service == null) {
+            if (listenner != null) listenner.onFail(context.getString(R.string.please_connect_internet));
+            return;
+        }
+
+        Call<ResponseModel> call = service.requestCharityDonate(requestModel);
+        setCall(call);
+        call.enqueue(new Callback<ResponseModel>() {
+            @Override
+            public void onResponse(Call<ResponseModel> call, Response<ResponseModel> response) {
+                ResponseModel baseModel = null;
+                if(response.isSuccessful()){
+                    baseModel = response.body();
+                }else{
+                    ResponseBody responseBody = response.errorBody();
+                    try {
+                        String error = responseBody.string();
+                        Timber.e("Response Body: %s", error);
+                        if (listenner != null) listenner.onFail(error);
+                        removeCall(call);
+                        return;
+                    }catch (Exception e){}
+                }
+                if (baseModel == null) {
+                    Timber.e("Response is Null");
+                    if (listenner != null) listenner.onFail(context.getString(R.string.error_server));
+                    removeCall(call);
+                    return;
+                }
+
+                Timber.i("Response Success");
+                if (listenner != null) listenner.onSuccess(baseModel);
+                removeCall(call);
+            }
+
+            @Override
+            public void onFailure(Call<ResponseModel> call, Throwable t) {
                 Timber.w("Call Failure");
                 removeCall(call);
                 if (listenner != null) listenner.onFail(t.getMessage());

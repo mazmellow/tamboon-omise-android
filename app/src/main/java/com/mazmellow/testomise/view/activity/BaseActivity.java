@@ -31,7 +31,7 @@ public class BaseActivity extends AppCompatActivity implements MvpView {
                     try {
                         progressDialog.show();
                         progressDialog.setCanceledOnTouchOutside(false);
-                        progressDialog.setCancelable(true);
+                        progressDialog.setCancelable(false);
                     }catch (Exception e){}
                 }
             });

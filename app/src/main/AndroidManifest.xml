@@ -22,6 +22,7 @@
         </activity>
 
         <activity android:name=".view.activity.DonateActivity" />
+        <activity android:name=".view.activity.SuccessActivity" />
 
     </application>
 

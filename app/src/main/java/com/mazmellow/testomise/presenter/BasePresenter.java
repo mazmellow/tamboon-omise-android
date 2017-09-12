@@ -39,5 +39,7 @@ public class BasePresenter implements Presenter<MvpView> {
             context = mvpView.getViewContext();
             apiClient = new ApiClient(context);
         }
+
+        mvpView.showLoading();
     }
 }
