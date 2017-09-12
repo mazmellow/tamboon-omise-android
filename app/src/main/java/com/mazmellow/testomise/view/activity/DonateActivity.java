@@ -19,6 +19,7 @@ import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.model.CharityModel;
 import com.mazmellow.testomise.model.ResponseModel;
 import com.mazmellow.testomise.presenter.CharityPresenter;
+import com.mazmellow.testomise.util.KeyStoreManager;
 
 import java.security.GeneralSecurityException;
 
@@ -37,8 +38,6 @@ import co.omise.android.ui.CreditCardEditText;
  */
 
 public class DonateActivity extends BaseActivity {
-
-    private static final String OMISE_PKEY = "pkey_test_599zublv8mxs6vg394a";
 
     @Bind(R.id.imgCharity) ImageView imgCharity;
     @Bind(R.id.txtCharityName) TextView txtCharityName;
@@ -142,7 +141,8 @@ public class DonateActivity extends BaseActivity {
     private void requestOmisePayment(String number, final String name, int month, int year, String cvv, final int donateAmount){
         showLoading();
         try {
-            Client client = new Client(OMISE_PKEY);
+            String key = KeyStoreManager.getValue(KeyStoreManager.OMISE_PKEY);
+            Client client = new Client(key);
 
             TokenRequest request = new TokenRequest();
             request.number = number;

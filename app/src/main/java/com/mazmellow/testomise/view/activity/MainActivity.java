@@ -29,6 +29,7 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         if(!EventBus.getDefault().isRegistered(this)) EventBus.getDefault().register(this);
 
+        //TODO: Notify user if device is rooted.
         checkDeviceRoot();
     }
 

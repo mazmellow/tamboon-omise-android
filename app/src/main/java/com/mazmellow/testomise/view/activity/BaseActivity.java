@@ -2,7 +2,10 @@ package com.mazmellow.testomise.view.activity;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.WindowManager;
 
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.util.DialogUtil;
@@ -13,6 +16,14 @@ import com.mazmellow.testomise.view.MvpView;
  */
 
 public class BaseActivity extends AppCompatActivity implements MvpView {
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        //TODO: Prevent Screen Capture
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+    }
 
     private ProgressDialog progressDialog;
 

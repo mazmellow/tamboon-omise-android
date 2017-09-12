@@ -41,6 +41,8 @@ public class HttpServiceFactory {
     }
 
     private OkHttpClient getClient() {
+
+        //TODO: Not Logging when Release app.
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         if(BuildConfig.DEBUG) interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
@@ -50,7 +52,7 @@ public class HttpServiceFactory {
                 .readTimeout(1, TimeUnit.MINUTES)
                 .writeTimeout(1, TimeUnit.MINUTES);
 
-        //For Handle Certificate Pinning.
+        //TODO: Handle Certificate Pinning.
         builder.sslSocketFactory(PubKeyManager.getSslSocketFactory(configuration.getKey()), new PubKeyManager(configuration.getKey()))
                 .hostnameVerifier(PubKeyManager.getHostnameVerifier(configuration.getHostName()));
 
