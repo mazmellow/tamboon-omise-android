@@ -39,7 +39,9 @@ public class CharityViewHolder extends RecyclerView.ViewHolder implements View.O
     public void bind(CharityModel model) {
         charityModel = model;
 
-        txtTitle.setText(charityModel.getName());
+        String name = charityModel.getName();
+        if(!TextUtils.isEmpty(name)) txtTitle.setText(name);
+
         String imageUrl = charityModel.getLogo_url();
         if(!TextUtils.isEmpty(imageUrl)) Glide.with(context).load(imageUrl).into(imgThumb);
     }

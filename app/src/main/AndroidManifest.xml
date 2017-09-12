@@ -21,9 +21,7 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name="co.omise.android.ui.CreditCardActivity"
-            android:theme="@style/OmiseSDKTheme" />
+        <activity android:name=".view.activity.DonateActivity" />
 
     </application>
 
