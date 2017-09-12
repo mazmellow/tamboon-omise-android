@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TestOmise</string>
+    <string name="root_detected_message">Device is rooted. It can cause security vulnerabilities. This can put you at risk to do any financial transactions.</string>
+    <string name="please_connect_internet">Please connect to internet.</string>
+    <string name="please_waiting">Please Waiting...</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="error">Error</string>
+    <string name="error_loading">There is an error. Please try again.</string>
+    <string name="error_server">Our server has an error. Please try again.</string>
+</resources>
