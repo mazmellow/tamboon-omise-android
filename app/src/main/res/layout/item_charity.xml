@@ -19,7 +19,8 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/charity_item_height"
             android:background="@color/light_grey"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerCrop"
+            android:src="@drawable/placeholder" />
 
         <TextView
             android:id="@+id/txtTitle"
@@ -28,7 +29,7 @@
             android:layout_margin="10dp"
             android:gravity="center_horizontal"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 
