@@ -32,6 +32,10 @@ public abstract class BaseRecycleAdapter extends RecyclerView.Adapter<RecyclerVi
         }
     }
 
+    public ArrayList getDatas() {
+        return mArrayList;
+    }
+
     public void clearDatas() {
         mArrayList.clear();
         notifyDataSetChanged();

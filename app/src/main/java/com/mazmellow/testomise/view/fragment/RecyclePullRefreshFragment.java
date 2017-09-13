@@ -12,6 +12,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.presenter.Presenter;
@@ -20,6 +21,7 @@ import com.mazmellow.testomise.view.MvpView;
 import com.mazmellow.testomise.view.activity.BaseActivity;
 import com.mazmellow.testomise.view.adapter.BaseRecycleAdapter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -32,8 +34,9 @@ public class RecyclePullRefreshFragment extends BaseFragment {
 
     private static final String NUM_COLUMN = "NUM_COLUMN";
 
-    @Bind(R.id.rvFeed) RecyclerView mRecyclerView;
-    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout mSwipeRefreshLayout;
+    @Bind(R.id.rvFeed) RecyclerView rvFeed;
+    @Bind(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.txtNoResult) TextView txtNoResult;
 
     private GridLayoutManager glm;
     private BaseRecycleAdapter mAdapter;
@@ -62,23 +65,23 @@ public class RecyclePullRefreshFragment extends BaseFragment {
 
         if(mNumColumn<1) mNumColumn = 1;
 
-        mRecyclerView.setHasFixedSize(false);
+        rvFeed.setHasFixedSize(false);
         glm = new GridLayoutManager(mActivity, mNumColumn){
             @Override
             protected int getExtraLayoutSpace(RecyclerView.State state) {
                 return 300;
             }
         };
-        mRecyclerView.setLayoutManager(glm);
-        mRecyclerView.setVisibility(View.GONE);
-        mRecyclerView.setItemAnimator(new DefaultItemAnimator());
+        rvFeed.setLayoutManager(glm);
+        rvFeed.setVisibility(View.GONE);
+        rvFeed.setItemAnimator(new DefaultItemAnimator());
 
-        if(mAdapter!=null) mRecyclerView.setAdapter(mAdapter);
+        if(mAdapter!=null) rvFeed.setAdapter(mAdapter);
 
         TypedValue typed_value = new TypedValue();
         mActivity.getTheme().resolveAttribute(android.support.v7.appcompat.R.attr.actionBarSize, typed_value, true);
-        mSwipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+        swipeRefreshLayout.setProgressViewOffset(false, 0, getResources().getDimensionPixelSize(typed_value.resourceId));
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 refresh();
@@ -109,7 +112,8 @@ public class RecyclePullRefreshFragment extends BaseFragment {
 
     @Override
     public void showError(String message) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
+        refreshListVisibility();
 
         final Activity activity = getActivity();
         if(activity==null || activity.isFinishing() || activity.isDestroyed()) return;
@@ -119,15 +123,13 @@ public class RecyclePullRefreshFragment extends BaseFragment {
 
     @Override
     public void showResult(Object result, int type) {
-        mSwipeRefreshLayout.setRefreshing(false);
+        swipeRefreshLayout.setRefreshing(false);
 
         List<?> results = (List<?>) result;
         if(results.size()>0){
             if(mAdapter!=null) mAdapter.replace(results);
-            mRecyclerView.setVisibility(View.VISIBLE);
-        }else{
-            mRecyclerView.setVisibility(View.GONE);
         }
+        refreshListVisibility();
 
         new Handler(Looper.getMainLooper()).post(new Runnable() {
             @Override
@@ -137,17 +139,28 @@ public class RecyclePullRefreshFragment extends BaseFragment {
         });
     }
 
+    private void refreshListVisibility(){
+        ArrayList<?> datas = mAdapter.getDatas();
+        if(datas.size()>0){
+            rvFeed.setVisibility(View.VISIBLE);
+            txtNoResult.setVisibility(View.GONE);
+        }else{
+            rvFeed.setVisibility(View.GONE);
+            txtNoResult.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void showLoading() {
-        mSwipeRefreshLayout.setRefreshing(true);
-        if (mRecyclerView != null) {
-            mRecyclerView.setVisibility(View.GONE);
+        swipeRefreshLayout.setRefreshing(true);
+        if (rvFeed != null) {
+            rvFeed.setVisibility(View.GONE);
         }
     }
 
     public void setAdapter(BaseRecycleAdapter adapter) {
         mAdapter = adapter;
-        if (mRecyclerView!=null) mRecyclerView.setAdapter(mAdapter);
+        if (rvFeed!=null) rvFeed.setAdapter(mAdapter);
     }
 
     public void setPresenter(Presenter<MvpView> presenter) {

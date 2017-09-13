@@ -19,13 +19,11 @@ public class CharityPresenter extends BasePresenter {
         setType(type);
     }
 
-    public void requestDonate(Token token, String name, int amount){
+    public void setDonateData(Token token, String name, int amount){
         requestModel = new RequestModel();
         requestModel.setToken(token.id);
         requestModel.setName(name);
         requestModel.setAmount(amount);
-
-        requestData();
     }
 
     @Override

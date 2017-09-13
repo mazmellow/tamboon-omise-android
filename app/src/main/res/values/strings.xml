@@ -11,6 +11,7 @@
     <string name="error_server">Our server has an error. Please try again.</string>
     <string name="failed_donate">Donate failed. Please try again.</string>
     <string name="success">SUCCESS :)</string>
+    <string name="no_result">There hasn\'t any results.\nTry refresh again by pull it down.</string>
 
     <string-array name="month_array">
         <item>01</item>
