@@ -53,6 +53,7 @@
 
             <EditText
                 android:id="@+id/edtUsername"
+                android:hint="NAME SURNAME"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
@@ -62,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Amount:"
+                android:text="Amount: (please choose more than 2,000 bath)"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
@@ -72,19 +73,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="numberDecimal"
+                android:hint="xxxx.xx"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Credit Card Number:"
+                android:text="Credit Card Number: (16 digits)"
                 android:textColor="@android:color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
             <co.omise.android.ui.CreditCardEditText
                 android:id="@+id/edtCardNumber"
+                android:hint="xxxx xxxx xxxx xxxx"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="20sp" />
@@ -165,6 +168,7 @@
                         android:layout_height="wrap_content"
                         android:inputType="numberPassword"
                         android:maxLength="3"
+                        android:hint="xxx"
                         android:textSize="20sp" />
 
                 </LinearLayout>
