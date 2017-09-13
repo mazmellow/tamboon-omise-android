@@ -68,13 +68,18 @@ public class DonateActivity extends BaseActivity {
             if(!TextUtils.isEmpty(name))txtCharityName.setText(name);
 
             String imageUrl = charityModel.getLogo_url();
-            if(!TextUtils.isEmpty(imageUrl)) Glide.with(this).load(imageUrl).into(imgCharity);
+            if(!TextUtils.isEmpty(imageUrl)) Glide.with(this).load(imageUrl).placeholder(R.drawable.placeholder).into(imgCharity);
         }
 
         edtUsername.addTextChangedListener(getValidateFormTextWatcher());
         edtAmount.addTextChangedListener(getValidateFormTextWatcher());
         edtCardNumber.addTextChangedListener(getValidateFormTextWatcher());
         edtCvv.addTextChangedListener(getValidateFormTextWatcher());
+
+        edtUsername.setOnFocusChangeListener(getHideKeyboardOnFocusListenner(edtUsername));
+        edtAmount.setOnFocusChangeListener(getHideKeyboardOnFocusListenner(edtUsername));
+        edtCardNumber.setOnFocusChangeListener(getHideKeyboardOnFocusListenner(edtUsername));
+        edtCvv.setOnFocusChangeListener(getHideKeyboardOnFocusListenner(edtUsername));
 
         ArrayAdapter<CharSequence> monthAdapter = ArrayAdapter.createFromResource(this, R.array.month_array, android.R.layout.simple_spinner_item);
         monthAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -154,7 +159,8 @@ public class DonateActivity extends BaseActivity {
             client.send(request, new TokenRequestListener() {
                 @Override
                 public void onTokenRequestSucceed(TokenRequest request, Token token) {
-                    charityPresenter.requestDonate(token, name, donateAmount);
+                    charityPresenter.setDonateData(token, name, donateAmount);
+                    charityPresenter.requestData();
                 }
 
                 @Override

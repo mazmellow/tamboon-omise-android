@@ -5,7 +5,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import com.mazmellow.testomise.R;
 import com.mazmellow.testomise.util.DialogUtil;
@@ -77,6 +80,18 @@ public class BaseActivity extends AppCompatActivity implements MvpView {
     @Override
     public Context getViewContext() {
         return this;
+    }
+
+    public View.OnFocusChangeListener getHideKeyboardOnFocusListenner(final EditText editText){
+        return new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    InputMethodManager imm = (InputMethodManager) getApplicationContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
+                }
+            }
+        };
     }
 
 }
