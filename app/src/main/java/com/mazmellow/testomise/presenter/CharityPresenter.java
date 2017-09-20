@@ -29,6 +29,7 @@ public class CharityPresenter extends BasePresenter {
     @Override
     public void requestData(){
         super.requestData();
+        if(apiClient == null) return;
 
         switch (type) {
             case TYPE_CHARITY_LIST: {

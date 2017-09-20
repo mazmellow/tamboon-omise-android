@@ -65,9 +65,14 @@ public class MainActivity extends BaseActivity {
     }
 
     private void showDonate(CharityModel charityModel) {
+        if(charityModel==null) return;
+
         Intent intent = new Intent(this, DonateActivity.class);
         intent.putExtra(Constants.BUNDLE_CHARITY, charityModel);
         startActivity(intent);
     }
 
+    public RecyclePullRefreshFragment getFragment() {
+        return fragment;
+    }
 }

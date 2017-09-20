@@ -140,7 +140,7 @@ public class RecyclePullRefreshFragment extends BaseFragment {
     }
 
     private void refreshListVisibility(){
-        ArrayList<?> datas = mAdapter.getDatas();
+        ArrayList<?> datas = getDatas();
         if(datas.size()>0){
             rvFeed.setVisibility(View.VISIBLE);
             txtNoResult.setVisibility(View.GONE);
@@ -166,5 +166,13 @@ public class RecyclePullRefreshFragment extends BaseFragment {
     public void setPresenter(Presenter<MvpView> presenter) {
         this.presenter = presenter;
         this.presenter.attachView(this);
+    }
+
+    public ArrayList getDatas(){
+        if(mAdapter!=null){
+            return mAdapter.getDatas();
+        }else{
+            return null;
+        }
     }
 }
