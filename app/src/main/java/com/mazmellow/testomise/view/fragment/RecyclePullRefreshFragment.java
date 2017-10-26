@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.mazmellow.testomise.R;
-import com.mazmellow.testomise.presenter.Presenter;
+import com.mazmellow.testomise.presenter.MainPresenter;
 import com.mazmellow.testomise.util.DialogUtil;
 import com.mazmellow.testomise.view.MvpView;
 import com.mazmellow.testomise.view.activity.BaseActivity;
@@ -42,7 +42,7 @@ public class RecyclePullRefreshFragment extends BaseFragment {
     private BaseRecycleAdapter mAdapter;
     private BaseActivity mActivity;
     private int mNumColumn;
-    private Presenter<MvpView> presenter;
+    private MainPresenter<MvpView> presenter;
 
     public static RecyclePullRefreshFragment newInstance(int numColumn) {
         RecyclePullRefreshFragment fragment = new RecyclePullRefreshFragment();
@@ -163,7 +163,7 @@ public class RecyclePullRefreshFragment extends BaseFragment {
         if (rvFeed!=null) rvFeed.setAdapter(mAdapter);
     }
 
-    public void setPresenter(Presenter<MvpView> presenter) {
+    public void setPresenter(MainPresenter<MvpView> presenter) {
         this.presenter = presenter;
         this.presenter.attachView(this);
     }

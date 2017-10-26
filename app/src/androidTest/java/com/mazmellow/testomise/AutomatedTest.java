@@ -43,6 +43,7 @@ public class AutomatedTest {
     private ArrayList datas;
     private boolean isCheckDeviceRooted, isCheckEachState;
     private boolean hasData;
+    private int index;
 
     @Rule
     public ActivityTestRule<MainActivity> mainActivityRule = new ActivityTestRule<>(MainActivity.class);
@@ -124,7 +125,7 @@ public class AutomatedTest {
         expYear = year + "";
         if(expMonth.length()==1) expMonth = "0"+expMonth;
 
-        int index = 0;
+        index = 0;
 
         Runnable runnable = new Runnable() {
             @Override

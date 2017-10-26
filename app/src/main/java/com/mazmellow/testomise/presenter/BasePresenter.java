@@ -8,7 +8,7 @@ import com.mazmellow.testomise.view.MvpView;
 /**
  * Created by Maz on 9/4/16 AD.
  */
-public class BasePresenter implements Presenter<MvpView> {
+public class BasePresenter implements MainPresenter<MvpView> {
 
     public MvpView mvpView;
     public Context context;
